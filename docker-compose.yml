@@ -31,6 +31,11 @@ services:
       - "var:/var/www/html/var"
       - "vendor:/var/www/html/vendor"
       - "node_modules:/var/www/html/node_modules"
+      - ./app:/var/www/html/app
+      - ./src:/var/www/html/src
+      - ./html/template/default:/var/www/html/html/template/default
+      - ./html/upload:/var/www/html/html/upload
+      - ./src/Eccube/Resource/template:/var/www/html/src/Eccube/Resource/template
     environment:
       # EC-CUBE environments
       APP_ENV: "dev"
@@ -45,7 +50,7 @@ services:
       # ECCUBE_TIMEZONE: "Asia/Tokyo"
       # ECCUBE_CURRENCY: "JPY"
       # ECCUBE_ADMIN_ROUTE: "admin"
-      # ECCUBE_USER_DATA_ROUTE: "user_data"
+      ECCUBE_USER_DATA_ROUTE: "document"
       # ECCUBE_ADMIN_ALLOW_HOSTS: []
       # ECCUBE_FORCE_SSL: false
       # ECCUBE_PHPINFO_ENABLED=false

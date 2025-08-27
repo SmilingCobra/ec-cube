@@ -31,7 +31,21 @@ if (!class_exists(Product::class)) {
      * @ORM\Entity(repositoryClass="Eccube\Repository\ProductRepository")
      */
     class Product extends AbstractEntity
-    {
+    {   
+        /**
+        * キャッシュのクリア：bin/console cache:clear --no-warmup
+        *データベース構造の更新用SQLを表示：bin/console doctrine:schema:update --dump-sql  --complete
+        *# bin/console doctrine:schema:update --dump-sql  --complete
+        * ALTER TABLE dtb_product ADD production_area VARCHAR(255) DEFAULT NULL;
+        *データベース構造の更新を実行（SQLを適用）：bin/console doctrine:schema:update --dump-sql --force --complete
+        *
+        *# bin/console doctrine:schema:update --dump-sql --force --complete
+        * ALTER TABLE dtb_product ADD production_area VARCHAR(255) DEFAULT NULL;
+        * Updating database schema...
+        * 1 query was executed                                                                                                              
+        *[OK] Database schema updated successfully!    
+        */
+        use \Customize\Entity\ProductTrait;
         private $_calc = false;
         private $stockFinds = [];
         private $stocks = [];

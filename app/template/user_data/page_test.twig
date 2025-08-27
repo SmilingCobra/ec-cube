@@ -1,0 +1,43 @@
+{% extends 'default_frame.twig' %}
+{% set body_class = 'product_page' %}
+{% block main %}
+<div class="ec-productRole">
+    <div class="ec-grid2">
+        <div class="ec-grid2__cell">
+            {# 商品画像 #}
+            ><img src="{{ asset('assets/img/top/banana.jpg') }}" alt="バナナ" width="400" height="400">
+        </div>
+        <div class="ec-grid2__cell">
+            <div class="ec-productRole__profile">
+                {# 商品名 #}
+                <h2 class="ec-headingTitle">バナナ</h2>
+                {# 価格 #}
+                <div class="ec-price">
+                    <span class="ec-price__price">￥200</span>
+                    <span class="ec-price__tax">（税込）</span>
+                </div>
+                {# 商品コード #}
+                <div class="ec-productRole__code">
+                    商品コード：BANANA-001
+                </div>
+                {# 商品説明 #}
+                <div class="ec-productRole__description">
+                    フレッシュで美味しいバナナです。朝食やおやつにぴったり！
+                </div>
+                {# 購入ボタン #}
+                <div class="ec-productRole__btn">
+                    <button type="button" class="ec-blockBtn--action">
+                        カートに入れる
+                    </button>
+                </div>
+                {# お気に入りボタン #}
+                <div class="ec-productRole__btn">
+                    <button type="button" class="ec-blockBtn--cancel">
+                        お気に入りに追加
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

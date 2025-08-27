@@ -1,0 +1,38 @@
+{% block main %}
+{% if Products is defined and Products %}
+<div style="display: flex; flex-wrap: wrap; gap: 16px;">
+    {% for Product in Products %}
+        <div style="width: 150px; text-align: center;">
+        {# ここにはプレフィックスとして絶対パスが必要だと思います。 #}
+            <img src="{{ asset('/html/upload/save_image/' ~ (Product.getMainListImage()|no_image_product)) }}" alt="{{ Product.getName() }}" style="width: 100%; height: auto;" {% if loop.index > 5 %} loading="lazy"{% endif %}>
+            <p style="margin-top: 8px; font-size: 14px;">{{ Product.getName() }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% if SingleProduct is defined and SingleProduct %}
+<p>{{SingleProduct.name}}</p>
+<img src="{{ asset('/html/upload/save_image/' ~ (SingleProduct.getMainListImage()|no_image_product)) }}" alt="{{ SingleProduct.getName() }}" style="width: 100px; height: 100px;">
+<a href="http://localhost:8080/product/page?name={{ SingleProduct.getName() }}">
+    {{ SingleProduct.getName() }}
+</a></br>
+<a href ="{{url('product_page', {'name':'バナナ'})}}">バナナ</a>
+{% endif %}
+
+
+<form action="http://localhost:8080/product/page" method="post">
+    <select id="product-select" name="product_name">
+       {% for Product in Products %}
+        <option value={{Product.getName()}}>{{Product.getName()}}</option>
+        {% endfor %}
+    
+    </select>
+    <button type="submit">送信</button>
+</form>
+
+
+
+
+
+
+{% endblock %}

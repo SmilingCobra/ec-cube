@@ -1,0 +1,11 @@
+{% extends 'default_frame.twig' %}
+
+{% block main %}
+<p>新規ページをもう一度作成します</p>
+{{ Products[0].getName() }}
+
+<p>新規ページをもう一度作成します</p>
+{% for Product in Products %}
+{{ Product.getName() }}
+{%endfor%}
+{% endblock %}
