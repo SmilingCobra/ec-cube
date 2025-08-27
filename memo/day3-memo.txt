@@ -1,0 +1,65 @@
+第三日 メモ
+
+1. Controller 層のコードを作る
+   - Controller と前のページ（前端ページ）をつなぐ
+   - フォルダ：
+     - Controller 層：Customize\Controller\ProductLayoutController.php
+     - 前のページ：template\default\Product\page.twig
+
+2. 自分の ProductRepository でデータベースを使う
+   - フォルダ：Customize\Repository\CustomizeProductRepository.php
+   - できること：
+     - 名前で探す：public function customFindByName($name)
+     - ぜんぶ探す：public function customFindAll()
+
+3. 前のページで見せる
+   3.1 {% if Products is defined and Products %} で for ループでデータを見せる
+   3.2 画像を見せるとき：
+   <img src="{{ asset('/html/upload/save_image/' ~ (Product.getMainListImage()|no_image_product)) }}">
+   絶対パスを使う
+   3.3 リンクでデータを渡す：
+   - URLでアクセス：
+   <a href="http://localhost:8080/product/page?name={{ SingleProduct.getName() }}">
+       {{ SingleProduct.getName() }}
+   </a>
+   - ルートでアクセス：
+   <a href="{{ url('product_page', {'name':'バナナ'}) }}">バナナ</a>
+   ルート例：@Route("/product/page", name="product_page", methods={"GET","POST"})
+   3.4 FORM でデータを渡す：
+   - POST で受け取る：
+   $productName = $request->request->get("product_name");
+
+4. データベースのテーブルとフィールド
+   4.1 新しいフィールドを足す：
+   - 新しい trait を使う
+   @ORM\Column(name = "production_area", type = "string", length = 255, nullable = true)
+   - クラスに書く：
+   use \Customize\Entity\ProductTrait;
+   - コンテナでコマンド：
+   bin/console cache:clear --no-warmup
+   bin/console doctrine:schema:update --dump-sql --complete
+   bin/console doctrine:schema:update --dump-sql --force --complete
+   4.2 新しいテーブルを作る：
+   - クラスを書く：class WebdocNews extends AbstractEntity
+   - コンテナで同じコマンドを使う
+
+5. フォームデータを受けると渡す
+   5.1 フォームデータを受ける：
+   $builder = $this->formFactory->createNamedBuilder('', CustomizeProductNameType::class);
+   $nameForm = $builder->getForm();
+   $nameForm->handleRequest($request);
+   if ($nameForm->isSubmitted() && $nameForm->isValid()) {
+       $status = 'success';
+   }
+   5.2 フォームデータを作る：
+   public function buildForm(FormBuilderInterface $builder, array $options){
+       $CustomizeProducts = $this->customizeProductRepository->customFindAll();
+       $choices = [];
+       foreach($CustomizeProducts as $CustomizeProduct){
+           $choices[$CustomizeProduct->getName()] = $CustomizeProduct->getName();
+       }
+       $builder->add('product_name', ChoiceType::class, ['choices' => $choices]);
+       $builder->add('submit', SubmitType::class, ['label'=> '表示する']);
+   }
+6. GITHUB：
+  https://github.com/SmilingCobra/ec-cube/tree/4.3

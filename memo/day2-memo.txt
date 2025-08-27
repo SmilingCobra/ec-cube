@@ -1,0 +1,16 @@
+第二日　メモ
+
+1. 新しい商品をアップロード
+   　画像をアップロードするので、dockerとパソコンのディスクをつなぐ設定が必要です
+   　./html/template/default:/var/www/html/html/template/default
+
+2. user_data 以外のアドレスを使う
+   　docker-compose.yaml ファイルで ECCUBE_USER_DATA_ROUTE の値を document に変えます
+   　meta.twig の中で
+   　　{% set meta_canonical = url(eccube_config.eccube_user_data_route, {'route': Page.url}) %} を
+   　　{% set meta_canonical = url('user_data', {'route': Page.url}) %} に変えます
+
+3. URL と HTML の住所をつなぐ
+   　app のファイルを docker とパソコンのディスクでつなぐ設定が必要です
+   　docker-compose.yaml ファイルに下の内容を追加します
+   　- ./app:/var/www/html/app
