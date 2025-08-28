@@ -1,0 +1,9 @@
+{% block main %}
+<h1>新しい Webdoc を作成</h1>
+
+{{ form_start(WebdocNewForm, {'method':'post', 'action':url('webdoc_new')}) }}
+
+    {{ form_row(WebdocNewForm.title) }}
+
+{{ form_end(WebdocNewForm) }}
+{% endblock %}

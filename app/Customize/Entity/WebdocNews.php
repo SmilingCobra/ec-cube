@@ -30,10 +30,11 @@ class WebdocNews extends AbstractEntity{
      */
     private $id;
 
-    /*
-    *@var string
+    /**
+    * @var string
     *
-    *@ORM\Column(name = "title", type="string", length = 255)
+    * @ORM\Column(name = "title", type="string", length = 255)
+    *
     */
     private $title;
 
