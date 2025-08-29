@@ -16,7 +16,6 @@ class WebdocNewsType extends AbstractType
             ->add('title', TextType::class, [
                 'label' => 'タイトル',
                 'required' => true,
-                'data' => 'NULL',
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'タイトルを入力してください'

@@ -1,37 +1,105 @@
 {% block main %}
+<style>
+    .page-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;   /* 水平居中 */
+        justify-content: flex-start;
+        min-height: 100vh;
+        padding: 30px;
+        background: #f5f7fa;
+    }
+    .page-header {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .page-header h1 {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin: 0;
+    }
+    .table-container {
+        background: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;  /* 表格居中 */
+    }
+    .table {
+        width: auto;              /* 自适应内容宽度 */
+        min-width: 600px;         /* 设置一个最小宽度，避免太窄 */
+        max-width: 900px;         /* 设置一个最大宽度 */
+        margin: 0 auto;           /* 居中 */
+    }
+    .table thead th {
+        background: #f7f9fc;
+        color: #333;
+        font-weight: 600;
+        border-bottom: 2px solid #dee2e6;
+        text-align: center;
+    }
+    .table tbody td {
+        vertical-align: middle;
+        text-align: center;
+    }
+    .table tbody tr:hover {
+        background: #f9fcff;
+    }
+    .btn-wrapper {
+        text-align: center;
+        margin-top: 10px;
+    }
+</style>
 
-<h1>Webdoc 一覧</h1>
-<a href="{{ path('webdoc_new') }}" class="btn btn-primary mb-3">新規追加</a>
+<div class="page-wrapper">
+    <div class="page-header">
+        <h1>📑 Webdoc 一覧</h1>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>タイトル</th>
-            <th>作成日</th>
-            <th>更新日</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for n in news %}
-            <tr>
-                <td>{{ n.id }}</td>
-                <td>
-                 {{ n.title }}
-                </td>
-                <td>{{ n.createDate|date('Y-m-d H:i') }}</td>
-                <td>{{ n.updateDate|date('Y-m-d H:i') }}</td>
-                <td>
-                        
-                        <a href="{{ path('webdoc_delete', {'id': n.id}) }}" class="btn btn-sm btn-danger">削除</a>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr><td colspan="5">データがありません。</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="table-container">
+        <table class="table table-hover table-bordered align-middle text-center">
+            <thead>
+                <tr>
+                    <th style="width: 60px;">ID</th>
+                    <th>タイトル</th>
+                    <th style="width: 180px;">作成日</th>
+                    <th style="width: 180px;">更新日</th>
+                    <th style="width: 120px;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for n in news %}
+                    <tr>
+                        <td>{{ n.id }}</td>
+                        <td class="fw-bold">{{ n.title }}</td>
+                        <td>{{ n.createDate|date('Y-m-d H:i') }}</td>
+                        <td>{{ n.updateDate|date('Y-m-d H:i') }}</td>
+                        <td>
+                            <a href="{{ path('webdoc_delete', {'id': n.id}) }}" 
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('本当に削除しますか？');">
+                                削除
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            データがありません。
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
+    <div class="btn-wrapper">
+        <a href="{{ path('webdoc_new') }}" class="btn btn-primary">
+            ＋ 新規追加
+        </a>
+    </div>
+</div>
 {% endblock %}

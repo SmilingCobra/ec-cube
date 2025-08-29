@@ -1,39 +1,156 @@
-{% extends 'default_frame.twig' %}
-
 {% block main %}
+<style>
+    body {
+        font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", sans-serif;
+        background: #f0f2f5;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* ==== 产品列表区块 ==== */
+    .section-products {
+        background: linear-gradient(135deg, #ffffff, #f9f9ff);
+        border-radius: 16px;
+        padding: 30px;
+        margin: 20px auto;
+        max-width: 1000px; /* 适合5列 */
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .section-products h2 {
+        margin-bottom: 20px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
+        border-left: 6px solid #4A90E2;
+        padding-left: 10px;
+    }
+    .product-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr); /* 一行5个 */
+        gap: 20px;
+    }
+    .product-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        text-align: center;
+        padding: 12px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+    .product-card img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+    .product-card p {
+        margin-top: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #444;
+    }
+
+    /* ==== 单个产品展示 ==== */
+    .single-product {
+        margin-top: 25px;
+        padding: 20px;
+        background: #fdf6e3;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid #f0e1b8;
+    }
+    .single-product h3 {
+        margin-bottom: 10px;
+        color: #b58900;
+    }
+    .single-product img {
+        border-radius: 8px;
+        margin: 10px 0;
+    }
+
+    /* ==== 查询表单区块 ==== */
+    .section-search {
+        background: linear-gradient(135deg, #f0faff, #e6f7ff);
+        border-radius: 16px;
+        padding: 30px;
+        margin: 40px auto;
+        max-width: 600px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .section-search h2 {
+        margin-bottom: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #005b96;
+    }
+    .product-form select {
+        padding: 8px 12px;
+        font-size: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        margin-right: 10px;
+    }
+    .product-form button {
+        padding: 8px 16px;
+        font-size: 15px;
+        border: none;
+        border-radius: 8px;
+        background: #0077cc;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+    .product-form button:hover {
+        background: #005fa3;
+    }
+</style>
+
+
+<!-- 产品列表 -->
 {% if Products is defined and Products %}
-<div style="display: flex; flex-wrap: wrap; gap: 16px;">
-    {% for Product in Products %}
-        <div style="width: 150px; text-align: center;">
-        {# ここにはプレフィックスとして絶対パスが必要だと思います。 #}
-            <img src="{{ asset('/html/upload/save_image/' ~ (Product.getMainListImage()|no_image_product)) }}" alt="{{ Product.getName() }}" style="width: 100%; height: auto;" {% if loop.index > 5 %} loading="lazy"{% endif %}>
-            <p style="margin-top: 8px; font-size: 14px;">{{ Product.getName() }}</p>
-        </div>
-    {% endfor %}
+<div class="section-products">
+    <h2>商品リスト</h2>
+    <div class="product-container">
+        {% for Product in Products %}
+            <div class="product-card">
+                <img src="{{ asset('/html/upload/save_image/' ~ (Product.getMainListImage()|no_image_product)) }}" 
+                     alt="{{ Product.getName() }}" 
+                     {% if loop.index > 5 %} loading="lazy"{% endif %}>
+                <p>{{ Product.getName() }}</p>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endif %}
+
+<!-- 单个产品展示 -->
 {% if SingleProduct is defined and SingleProduct %}
-<p>{{SingleProduct.name}}</p>
-<img src="{{ asset('/html/upload/save_image/' ~ (SingleProduct.getMainListImage()|no_image_product)) }}" alt="{{ SingleProduct.getName() }}" style="width: 100px; height: 100px;">
-<a href="http://localhost:8080/product/page?name={{ SingleProduct.getName() }}">
-    {{ SingleProduct.getName() }}
-</a></br>
-<a href ="{{url('product_page', {'name':'バナナ'})}}">バナナ</a>
+<div class="single-product">
+    <h3>{{ SingleProduct.name }}</h3>
+    <img src="{{ asset('/html/upload/save_image/' ~ (SingleProduct.getMainListImage()|no_image_product)) }}" 
+         alt="{{ SingleProduct.getName() }}" 
+         style="width: 150px; height: auto;">
+</div>
 {% endif %}
 
+<!-- 查询表单 -->
+<div class="section-search">
+    <h2>商品検索</h2>
+    <div class="product-form">
+        <form action="http://localhost:8080/product/page" method="post">
+            <select id="product-select" name="product_name">
+               {% for Product in Products %}
+              <option value="{{ Product.getName() }}" {{ (SingleProduct is defined and SingleProduct.getName() == Product.getName()) ? 'selected' : '' }}>
+    {{ Product.getName() }}</option>
 
-<form action="http://localhost:8080/product/page" method="post">
-    <select id="product-select" name="productName">
-        <option value="バナナ">バナナ</option>
-        <option value="チェリーアイスサンド">チェリーアイスサンド</option>
-        <option value="彩のジェラートCUBE">彩のジェラートCUBE</option>
-    </select>
-    <button type="submit">送信</button>
-</form>
-
-
-
-
-
-
+                {% endfor %}
+            </select>
+            <button type="submit">検索</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

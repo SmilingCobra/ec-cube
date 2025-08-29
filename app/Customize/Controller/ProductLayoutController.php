@@ -57,13 +57,13 @@ class ProductLayoutController extends AbstractController
         }
 
         
-        //form
-       $builder = $this->formFactory->createNamedBuilder('', CustomizeProductNameType::class);
-        $nameForm = $builder->getForm();
-        $nameForm->handleRequest($request);
-        if ($nameForm->isSubmitted() && $nameForm->isValid()) {
-            $status = 'success';
-        }
+    //     //form
+    //    $builder = $this->formFactory->createNamedBuilder('', CustomizeProductNameType::class);
+    //     $nameForm = $builder->getForm();
+    //     $nameForm->handleRequest($request);
+    //     if ($nameForm->isSubmitted() && $nameForm->isValid()) {
+    //         $status = 'success';
+    //     }
     
        return ['Products' => $Products,'SingleProduct'=> $Product];
     }

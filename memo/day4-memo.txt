@@ -1,0 +1,33 @@
+第四日　メモ
+1 FormData
+	1.1 buildForm
+	バックエンドのコードでフォームの属性を定義し、フロントエンドで表示するために使います。
+
+	1.2 handleRequest
+	フロントエンドのフォームデータを取得し、バックエンドのフォームと一対一で対応させます。
+
+	1.3 フォームタグ
+	{{ form_start(WebdocNewForm, {'method':'post','action':url('webdoc_new')}) }}
+	WebdocNewForm は Controller 内で以下のように定義されています：
+	return $this->render('Webdoc/new.twig', [
+    'WebdocNewForm' => $form->createView(),
+	]);
+
+
+2.Twig extension:
+ページでデータを少し変えるために使います。
+たとえば、数字をきれいに見せることや、商品に写真がないときに、かわりの写真を出すことができます。
+作るときは、AbstractExtensionを使って、getFunction()でフィルターを登録します。
+
+3.Service:
+一つのリクエストで、たくさんのデータベースのテーブルを使うとき、Serviceはその操作をまとめます。そして、外に一つのサービスだけを出します。こうすると、コードの管理がやさしくて、べんりになります。
+
+4.管理ページのメニュー
+	4.1 eccube_nav.yaml
+	このファイルはメニューの木こうぞうを管理するファイルです。class_category の中のurlのプロパティは、@Routeの中のurlのnameとつながります。 childrenは子ディレクトリを あらわします。children のプロパティをけすことで、メニューを かんりすることができます。
+	4.2 ページ移動
+	ページの設定を終えた後、ディレクトリをクリックすると、対応するURLに移動できます。
+	4.3 messages.ja.yaml
+	messages.ja.yaml は、ディレクトリ情報の表示に使われ、多言語対応の設定ができます。
+5. MasterData
+	ラベルデータとして、ユーザーが定義した一部のパラメータの属性、例えば商品のカテゴリがあります。その表の id は他の表の外部キーとして使われ、二つの表を関連付けます。	
